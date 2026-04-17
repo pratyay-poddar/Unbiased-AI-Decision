@@ -1,0 +1,95 @@
+body {
+    background-color: #0f172a;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.card {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+h1 {
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 10px;
+    font-size: 24px;
+    margin-top: 0;
+}
+
+.status-wrapper {
+    margin-bottom: 20px;
+}
+
+#status-text {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+.controls {
+    margin: 25px 0;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+#audit-btn {
+    background: #3b82f6;
+    color: white;
+    flex-grow: 1;
+}
+
+#audit-btn:hover { background: #2563eb; }
+
+#toggle-btn {
+    background: #475569;
+    color: white;
+    width: 150px;
+}
+
+#toggle-btn.active {
+    background: #10b981;
+}
+
+.result {
+    background: #334155;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid transparent;
+}
+
+.approved { border-left-color: #10b981; }
+.rejected { border-left-color: #ef4444; }
+
+.nudge {
+    color: #fbbf24;
+    font-size: 12px;
+    display: block;
+    margin-top: 4px;
+}
+
+.placeholder {
+    color: #94a3b8;
+    font-style: italic;
+    text-align: center;
+}

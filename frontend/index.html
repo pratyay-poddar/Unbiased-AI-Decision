@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EquiLens AI | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="card">
+        <h1>EquiLens AI Dashboard</h1>
+        <p class="status-wrapper">Status: <span id="status-text">RAW MODEL</span></p>
+
+        <div class="controls">
+            <button id="toggle-btn" onclick="toggleMitigation()">Mitigation: OFF</button>
+            <button id="audit-btn" onclick="runAudit()">Run Audit</button>
+        </div>
+
+        <div id="display">
+            <p class="placeholder">Click "Run Audit" to process applicants.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
