@@ -1,27 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EquiLens AI | Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EquiLens | Glass Console</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;700;800&family=JetBrains+Mono&display=swap"
+      rel="stylesheet" />
+  </head>
+  <body>
+    <div class="blob-1"></div>
+    <div class="blob-2"></div>
 
-    <div class="card">
-        <h1>EquiLens AI Dashboard</h1>
-        <p class="status-wrapper">Status: <span id="status-text">RAW MODEL</span></p>
+    <div class="glass-wrapper">
+      <header class="console-nav">
+        <div class="brand">
+          <div class="logo-mark"></div>
+          <span>EQUILENS</span>
+        </div>
+        <div class="engine-status">
+          <span id="status-dot" class="dot"></span>
+          <span id="status-text">RAW_MODE</span>
+        </div>
+      </header>
 
-        <div class="controls">
-            <button id="toggle-btn" onclick="toggleMitigation()">Mitigation: OFF</button>
-            <button id="audit-btn" onclick="runAudit()">Run Audit</button>
+      <section class="main-display">
+        <div id="display" class="audit-log">
+          <div class="placeholder">AWAITING SYSTEM_START...</div>
+        </div>
+      </section>
+
+      <footer class="controls">
+        <div
+          class="toggle-group"
+          id="mitigation-toggle"
+          onclick="toggleMitigation()">
+          <div class="toggle-track">
+            <div id="toggle-knob" class="knob"></div>
+          </div>
+          <span class="label">MITIGATION</span>
         </div>
 
-        <div id="display">
-            <p class="placeholder">Click "Run Audit" to process applicants.</p>
-        </div>
+        <button class="audit-btn" onclick="runAudit()">
+          <span class="btn-text">RUN AUDIT</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </footer>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

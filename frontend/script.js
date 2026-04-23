@@ -1,67 +1,78 @@
 let mitigationOn = false;
 
 function toggleMitigation() {
-    mitigationOn = !mitigationOn;
-    const btn = document.getElementById('toggle-btn');
-    const status = document.getElementById('status-text');
-    
-    btn.innerText = `Mitigation: ${mitigationOn ? 'ON' : 'OFF'}`;
-    btn.classList.toggle('active');
-    
-    status.innerText = mitigationOn ? 'FAIRNESS ACTIVE' : 'RAW MODEL';
-    status.style.color = mitigationOn ? '#10b981' : '#ef4444';
+  mitigationOn = !mitigationOn;
+
+  // UI Elements
+  const toggleContainer = document.getElementById("mitigation-toggle");
+  const dot = document.getElementById("status-dot");
+  const text = document.getElementById("status-text");
+
+  toggleContainer.classList.toggle("active");
+
+  if (mitigationOn) {
+    dot.className = "dot active";
+    text.innerText = "FAIRNESS_ACTIVE";
+    text.style.color = "#10b981";
+  } else {
+    dot.className = "dot";
+    text.innerText = "RAW_MODE";
+    text.style.color = "#f43f5e";
+  }
 }
 
 async function runAudit() {
-    //database
-    const applicants = [
-        { name: "Alice (F)", score: 0.68, gender: "Female" },
-        { name: "Bob (M)", score: 0.82, gender: "Male" }
-    ];
+  const display = document.getElementById("display");
+  display.innerHTML = '<div class="placeholder">INITIATING_AUDIT...</div>';
 
-    const display = document.getElementById('display');
-    display.innerHTML = '<p>Contacting Go Backend...</p>';
+  const applicants = [
+    { name: "Alice (F)", score: 0.68, gender: "Female" },
+    { name: "Bob (M)", score: 0.82, gender: "Male" },
+  ];
 
-    try {
-        const results = [];
-        for (let person of applicants) {
-            // Fetch request to our Go server running on port 8000
-            const response = await fetch(`http://localhost:8000/audit?mitigate=${mitigationOn}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(person)
-            });
-            
-            const data = await response.json();
-            results.push(data);
-        }
+  try {
+    const results = [];
+    for (let person of applicants) {
+      // FIX: Sending mitigation status as a query param to match Go backend logic
+      const response = await fetch(
+        `http://localhost:8000/audit?mitigate=${mitigationOn}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(person),
+        },
+      );
 
-        renderResults(results);
-    } catch (error) {
-        display.innerHTML = '<p style="color: #ef4444">Error: Could not connect to Go server.</p>';
-        console.error("Backend Error:", error);
+      if (!response.ok) throw new Error("Network Error");
+      results.push(await response.json());
     }
+    renderResults(results);
+  } catch (error) {
+    display.innerHTML =
+      '<div class="placeholder" style="color:#f43f5e">ERROR: BACKEND_UNREACHABLE</div>';
+  }
 }
 
 function renderResults(data) {
-    const display = document.getElementById('display');
-    display.innerHTML = '';
+  const display = document.getElementById("display");
+  display.innerHTML = "";
 
-    data.forEach(res => {
-        const div = document.createElement('div');
-        // If status is 'Approved', adds 'approved' class; if 'Rejected', adds 'rejected'
-        div.className = `result ${res.status.toLowerCase()}`;
-        
-        div.innerHTML = `
-            <div>
-                <strong>${res.name}</strong>
-                ${res.mitigation_applied ? '<span class="nudge">✨ Adjusted for Fairness</span>' : ''}
+  data.forEach((res) => {
+    const div = document.createElement("div");
+    div.className = "audit-row";
+
+    const statusColor = res.status === "Approved" ? "#10b981" : "#f43f5e";
+
+    div.innerHTML = `
+            <div class="row-left">
+                <span>${res.name}</span>
+                ${res.mitigation_applied ? '<span class="nudge-icon">✦</span>' : ""}
             </div>
-            <div style="text-align: right">
-                <div style="font-weight: bold; color: ${res.status === 'Approved' ? '#10b981' : '#ef4444'}">${res.status}</div>
-                <small>Score: ${res.final_score.toFixed(2)}</small>
+            <div class="row-right">
+                <span class="score-tag">SC_${res.final_score.toFixed(2)}</span>
+                <span style="color: ${statusColor}; font-weight: 800;">${res.status.toUpperCase()}</span>
             </div>
         `;
-        display.appendChild(div);
-    });
+    display.appendChild(div);
+  });
 }
