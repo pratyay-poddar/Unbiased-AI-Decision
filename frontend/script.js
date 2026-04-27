@@ -22,35 +22,33 @@ function toggleMitigation() {
 }
 
 async function runAudit() {
-  const display = document.getElementById("display");
-  display.innerHTML = '<div class="placeholder">INITIATING_AUDIT...</div>';
+    const display = document.getElementById('display');
+    display.innerHTML = '<div class="placeholder">INITIATING_AUDIT...</div>';
 
-  const applicants = [
-    { name: "Alice (F)", score: 0.68, gender: "Female" },
-    { name: "Bob (M)", score: 0.82, gender: "Male" },
-  ];
+    // REPLACE THIS URL with your actual Render Backend URL after Step 2
+    const API_BASE = window.location.hostname === "localhost" 
+        ? "http://localhost:8000" 
+        : "https://unbiased-ai-backend.onrender.com"; 
 
-  try {
-    const results = [];
-    for (let person of applicants) {
-      // FIX: Sending mitigation status as a query param to match Go backend logic
-      const response = await fetch(
-        `http://localhost:8000/audit?mitigate=${mitigationOn}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(person),
-        },
-      );
+    const applicants = [
+        { name: "Alice (F)", score: 0.68, gender: "Female" },
+        { name: "Bob (M)", score: 0.82, gender: "Male" }
+    ];
 
-      if (!response.ok) throw new Error("Network Error");
-      results.push(await response.json());
+    try {
+        const results = [];
+        for (let p of applicants) {
+            const r = await fetch(`${API_BASE}/audit?mitigate=${mitigationOn}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(p)
+            });
+            results.push(await r.json());
+        }
+        renderResults(results);
+    } catch (e) {
+        display.innerHTML = '<div class="placeholder" style="color:#f43f5e">CONNECTION_LOST</div>';
     }
-    renderResults(results);
-  } catch (error) {
-    display.innerHTML =
-      '<div class="placeholder" style="color:#f43f5e">ERROR: BACKEND_UNREACHABLE</div>';
-  }
 }
 
 function renderResults(data) {
