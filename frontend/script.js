@@ -28,7 +28,7 @@ async function runAudit() {
     // Logic: If on localhost, use port 8000. If on Render, use the clean URL.
     const API_BASE = window.location.hostname === "localhost" 
         ? "http://localhost:8000" 
-        : "https://unbiased-ai-backend.onrender.com"; 
+        : "https://unbiased-ai-decision-1.onrender.com"; 
 
     const applicants = [
         { name: "Alice (F)", score: 0.68, gender: "Female" },
